@@ -1,0 +1,21 @@
+{
+  "name": "node-authority",
+  "version": "1.0.0",
+  "description": "node access control module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@dev.louding.com:lab/authroity.git"
+  },
+  "keywords": [
+    "access",
+    "control",
+    "permission",
+    "authority"
+  ],
+  "author": "tony",
+  "license": "ISC"
+}
