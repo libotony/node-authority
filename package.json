@@ -17,5 +17,9 @@
     "authority"
   ],
   "author": "tony",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "async": "^1.5.0",
+    "mysql": "^2.9.0"
+  }
 }
