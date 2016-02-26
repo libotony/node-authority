@@ -78,10 +78,9 @@ app.listen(3000);
 ### 权限举例说明
 `tb_authority.name`为人类易读的权限名称，一般会作为检查权限时传入的参数，`tb_authority.code`为程序储存时的权限名称。`tb_admin.authority`和`tb_role.authority`为权限存储字段，存储方式为`JSON.stringify()`过后的数组。
 ### API列表
-* [`check`](#check)
+* [`check`](#checkpermission)
 
 #### check(permission)
-<p id="check"/>
 
 ``` javascript
 /**

@@ -3,6 +3,7 @@ var mysql = require('mysql');
 var async = require('async');
 var ownOptions = {};
 var authMap = {};
+var connection = null;
 
 /**
  * @see       权限模块配置
@@ -24,6 +25,8 @@ function configure (options){
     password  : options.mysql.password || '',
     database  : options.mysql.database
   };
+
+  connection = mysql.createConnection(ownOptions.mysql);
 };
 
 /**
@@ -49,18 +52,18 @@ function check(permission){
  * @version   1.0.0
  */
 function authMiddleWare(req, res, next){
-  if(!ownOptions.hasOwnProperty('mysql'))
-    throw 'You must call configure function before use the middleware';
   if(!req.hasOwnProperty('session'))
     throw 'You must use the middleware after hang session parser';
 
-  var connection = mysql.createConnection(ownOptions.mysql);
+  if(!connection)
+    connection = mysql.createConnection(ownOptions.mysql);
   async.auto({
     auth_map : function(cb){
 
       //查询出所有权限名称并freeze authMap
       if(Object.isFrozen(authMap))
         return cb()
+      authMap = {};
       connection.query('select * from tb_authority',function(err, result){
         if(err){
           return cb(err);
