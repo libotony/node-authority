@@ -1,6 +1,7 @@
 'use strict';
 var mysql = require('mysql');
 var async = require('async');
+var debug = require('debug')('authority');
 var ownOptions = {};
 var authMap = {};
 var connection = null;
@@ -37,6 +38,10 @@ function configure (options){
  * @returns   Boolean 是否拥有指定的权限
  */
 function check(permission){
+  // admin_level=0为超级管理员
+  if(req.session.hasOwnProperty('admin_level')&&req.session.admin_level == 0){
+    return true;
+  }
   // 不存在权限时直接返回false
   if(!authMap.hasOwnProperty(permission))
     return false;
@@ -98,7 +103,7 @@ function authMiddleWare(req, res, next){
             try{
               req.session.user_auth = req.session.user_auth.concat(JSON.parse(results[0].userAuth));
             }catch(e){
-              console.error('auth middleware parse array error',results[0].userAuth,e);
+              debug('auth middleware parse array error',results[0].userAuth,e);
             }
           }
           for(var i in results){
@@ -107,7 +112,7 @@ function authMiddleWare(req, res, next){
               try{
                 req.session.user_auth = req.session.user_auth.concat(JSON.parse(results[i].roleAuth));
               }catch(e){
-                console.error('auth middleware parse array error',results[i].roleAuth,e);
+                debug('auth middleware parse array error',results[i].roleAuth,e);
               }
             }
           }
