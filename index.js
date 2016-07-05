@@ -39,7 +39,7 @@ function configure (options){
  */
 function check(permission){
   // admin_level=0为超级管理员
-  if(req.session.hasOwnProperty('admin_level')&&req.session.admin_level == 0){
+  if(this.session.hasOwnProperty('admin_level')&&this.session.admin_level == 0){
     return true;
   }
   // 不存在权限时直接返回false
