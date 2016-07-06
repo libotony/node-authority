@@ -1,0 +1,20 @@
+language: node_js
+node_js:
+  - "6"
+  - "5"
+  - "4"
+  - "4.4.x"
+  - "0.12.x"
+  - "0.10.x"
+services:
+  - mysql
+dist: trusty
+sudo: required
+addons:
+  apt:
+    packages:
+    - mysql-server-5.6
+    - mysql-client-core-5.6
+    - mysql-client-5.6
+before_script:
+  - mysql -e 'create database authority_test;'
