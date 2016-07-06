@@ -1,6 +1,6 @@
 {
   "name": "node-authority",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "node access control module",
   "main": "index.js",
   "scripts": {
@@ -17,7 +17,7 @@
     "permission",
     "authority"
   ],
-  "author": "tony.l",
+  "author": "tony.li",
   "license": "MIT",
   "dependencies": {
     "async": "^1.5.0",
