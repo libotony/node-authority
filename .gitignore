@@ -1,0 +1,12 @@
+.DS_Store
+node_modules/
+*.swp
+*.log
+*.rdb
+.idea/*
+bower_components
+npm-debug.log
+*.swp
+*.xlsx
+*.vim
+coverage/*

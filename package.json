@@ -4,7 +4,8 @@
   "description": "node access control module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/.bin/mocha test/index.test.js",
+    "test-cov": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha test/index.test.js"
   },
   "repository": {
     "type": "git",
@@ -17,9 +18,19 @@
     "authority"
   ],
   "author": "tony",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "async": "^1.5.0",
+    "debug": "^2.2.0",
     "mysql": "^2.9.0"
+  },
+  "devDependencies": {
+    "body-parser": "^1.15.2",
+    "chai": "^3.5.0",
+    "express": "^4.14.0",
+    "express-session": "^1.14.0",
+    "istanbul": "^0.4.4",
+    "mocha": "^2.5.3",
+    "supertest": "^1.2.0"
   }
 }

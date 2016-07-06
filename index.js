@@ -15,9 +15,9 @@ var connection = null;
 function configure (options){
   options = options || {};
   if(!options.hasOwnProperty('mysql'))
-    throw 'You must specify msyql options';
+    throw new Error('You must specify mysql options');
   if(!options.mysql.hasOwnProperty('database'))
-    throw 'You must specify msyql database';
+    throw new Error('You must specify mysql database');
 
   ownOptions.mysql = {
     host      : options.mysql.host || 'localhost',
@@ -39,7 +39,7 @@ function configure (options){
  */
 function check(permission){
   // admin_level=0为超级管理员
-  if(this.session.hasOwnProperty('admin_level')&&this.session.admin_level == 0){
+  if(this.session.hasOwnProperty('admin_level')&&(this.session.admin_level == 0)){
     return true;
   }
   // 不存在权限时直接返回false
@@ -58,7 +58,7 @@ function check(permission){
  */
 function authMiddleWare(req, res, next){
   if(!req.hasOwnProperty('session'))
-    throw 'You must use the middleware after hang session parser';
+    throw new Error('You must use the middleware after hang session parser');
 
   if(!connection)
     connection = mysql.createConnection(ownOptions.mysql);

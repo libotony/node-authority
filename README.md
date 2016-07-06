@@ -90,6 +90,3 @@ app.listen(3000);
 req.check('Home.View');
 res.locals.check('Home.View');
 ```
-
-
-
