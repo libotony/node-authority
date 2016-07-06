@@ -40,12 +40,12 @@ CREATE TABLE tb_admin(                                        #管理表
 ```
 ### 安装
 ``` bash
-npm install git+ssh://git@dev.louding.com:lab/authroity.git --save
+npm install node-authroity --save
 ```
 或者在package.json中加入如下字段
 
 ``` json
-"authority": "git+ssh://git@dev.louding.com:lab/authroity.git#master"
+"node-authority": "^0.1.0"
 ```
 ### 初始化
 
