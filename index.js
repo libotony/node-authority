@@ -4,7 +4,7 @@ var async = require('async');
 var debug = require('debug')('authority');
 var ownOptions = {};
 var authMap = {};
-var connection = null;
+var pool = null;
 
 /**
  * @see       权限模块配置
@@ -24,11 +24,12 @@ function configure (options){
     port      : options.mysql.port || 3306,
     user      : options.mysql.user || 'root',
     password  : options.mysql.password || '',
-    database  : options.mysql.database
+    database  : options.mysql.database,
+    connectionLimit : 1
   };
 
-  connection = mysql.createConnection(ownOptions.mysql);
-};
+  pool = mysql.createPool(ownOptions.mysql);
+}
 
 /**
  * @see       权限检查功能，要挂在req和res.locals下，bind(req)
@@ -60,16 +61,16 @@ function authMiddleWare(req, res, next){
   if(!req.hasOwnProperty('session'))
     throw new Error('You must use the middleware after hang session parser');
 
-  if(!connection)
-    connection = mysql.createConnection(ownOptions.mysql);
+  if(!pool)
+    pool = mysql.createPool(ownOptions.mysql);
   async.auto({
     auth_map : function(cb){
 
       //查询出所有权限名称并freeze authMap
       if(Object.isFrozen(authMap))
-        return cb()
+        return cb();
       authMap = {};
-      connection.query('select * from tb_authority',function(err, result){
+      pool.query('select * from tb_authority',function(err, result){
         if(err){
           return cb(err);
         }
@@ -77,7 +78,7 @@ function authMiddleWare(req, res, next){
           authMap[result[i]['name']] = {
             code : result[i]['code'],
             id : result[i]['auth_id']
-          }
+          };
         }
         Object.freeze(authMap);
         return cb();
@@ -93,7 +94,7 @@ function authMiddleWare(req, res, next){
       }
       if(req.session.user_auth)
         return cb();
-      connection.query('select a.authority as userAuth,c.authority as roleAuth from tb_admin a left join tb_map b on a.admin_id = b.adminid left join tb_role c on b.roleid = c.role_id where a.admin_id = ?;',[req.session.uid],function(err, results){
+      pool.query('select a.authority as userAuth,c.authority as roleAuth from tb_admin a left join tb_map b on a.admin_id = b.adminid left join tb_role c on b.roleid = c.role_id where a.admin_id = ?;',[req.session.uid],function(err, results){
         if(err)
           return cb(err);
         req.session.user_auth = [];
@@ -121,7 +122,7 @@ function authMiddleWare(req, res, next){
       });
 
     }
-  },function(err, results){
+  },function(err){
 
     if(err){
       return next(err);
@@ -132,7 +133,7 @@ function authMiddleWare(req, res, next){
     }
 
   });
-};
+}
 
 module.exports = {
   configure : configure,
